@@ -23,3 +23,6 @@ sketch
 *.sqlite3
 *.db-shm
 *.db-wal
+
+##Environment
+.vscode
