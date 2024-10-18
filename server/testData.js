@@ -1,5 +1,5 @@
-const Song = require('./models/song');
 const mongoose = require('mongoose');
+const Song = require('./models/song');
 
 const testSongs = [
     {
@@ -27,12 +27,15 @@ mongoose.connect('mongodb://localhost/AfroGroove')
 const seedDatabase = async () => {
     try {
         await Song.deleteMany({}); //Clears existing songs
-        await Song.insertMany(testSongs);
-        console.log('Test data inserted successfully');
-        mongoose.connection.close();// Closes the session
+        console.log('Cleared existing songs');
+            
+            //Insert new songs
+        const insertedSongs = await Song.insertMany(testSongs);
+        console.log('Test data inserted successfully:', insertedSongs);
     } catch (error) {
         console.error('Error seeding database:', error);
-        mongoose.connection.close();
+    } finally {
+        mongoose.connection.close(); // Closes the session
     }
 };
 

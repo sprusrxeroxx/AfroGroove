@@ -10,6 +10,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+const songRoutes = require('./routes/songs');
+
+//Use routes
+app.use('/api/songs', songRoutes);
+
 // MongoDB connection for storing data
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/AfroGroove')
     .then(() => console.log('MongoDB connected'))
