@@ -8,8 +8,10 @@ function SongList() {
         useEffect(() => {
             const fetchSongs = async () => {
                 try {
+                    console.log('Fetching songs...');
                     const response = await axios.get('http://localhost:5000/api/songs');
-                    setSongs(response.data)
+                    console.log('API Response:', response.data);
+                    setSongs(response.data);
                 } catch (error) {
                     console.error('Error fetching songs:', error);
                 }
