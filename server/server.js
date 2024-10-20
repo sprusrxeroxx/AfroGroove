@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 
 //  Middleware for the application
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
 const songRoutes = require('./routes/songs');
