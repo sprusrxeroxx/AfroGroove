@@ -1,17 +1,27 @@
 import React from 'react';
-import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, Box, Flex, Heading, textDecoration, useColorModeValue, Stack } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 function Navbar() {
     return (
-        <Box bg="teal.500" px={4} py={3}>
-            <Flex maxW="1200px" mx="auto" alignItems="center">
-                <Link to="/">
-                    <Heading size="md" color="white">AfroGroove</Heading>
+        <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+            <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+                <Heading size='md'>
+                <Link as={RouterLink} to='/' _hover={{ textDecoration: 'blue' }}>
+                AfroGroove App
                 </Link>
-                <Spacer />
+                </Heading>
+                <Stack direction={'row'} spacing={7}>
+                    <Link as={RouterLink} to='/' px={2}>
+                        Songs
+                    </Link>
+                    <Link as={RouterLink} to='/add' px={2}>
+                        Add Song
+                    </Link>
+                </Stack>
             </Flex>
         </Box>
     );
 }
+
 export default Navbar;

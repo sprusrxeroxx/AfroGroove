@@ -1,6 +1,19 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+    Box,
+    VStack,
+    Heading,
+    Text,
+    Link,
+    Spinner,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription
+} from '@chakra-ui/react'
+
 
 function SongList() {
         const [songs, setSongs] = useState([]);
@@ -28,30 +41,52 @@ function SongList() {
     }, []);
 
     if (loading) {
-        return <div>Loading songs...</div>;
+        return (
+            <Box textAlign='center' py={10}>
+                <Spinner size='x1' />
+            </Box>
+        )
     }
 
     if (error) {
-        return <div className='error-message'>{error}</div>;
+        return (
+            <Alert status='error'>
+                <AlertIcon />
+                <AlertTitle>Error!</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+            </Alert>
+        );
     }
 
     return (
-        <div className='song-list'>
-            <h2>Available Songs</h2>
+        <Box>
+            <Heading mb={16}>Available Songs</Heading>
             {songs.length === 0 ? (
-                <p>No songs available. Add some songs to get started!</p>
+                <Text>No songs available. Add some songs to get started!</Text>
             ) : (
-                <ul>
+                <VStack spacing={4} align='stretch'>
                     {songs.map(song => (
-                        <li key={song._id}>
-                            <Link to={'/play/${song._id}'}>
+                        <Box
+                            key={song._id}
+                            p={5}
+                            shadow='md'
+                            borderWidth='1px'
+                            borderRadius='md'
+                        >
+                            <Link
+                                as={RouterLink} 
+                                // eslint-disable-next-line no-template-curly-in-string
+                                to={'/play/${song._id}'}
+                                fontSize='1g'
+                                fontWeight='semibold'
+                            >
                                 {song.title} - {song.artist}
                             </Link>
-                        </li>
+                        </Box>
                     ))}
-                </ul>
+                </VStack>
             )}
-        </div>
+        </Box>
     );
 }
 

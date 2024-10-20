@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ClassNames } from '@emotion/react';
+import {
+    Box,
+    VStack,
+    Heading,
+    FormControl,
+    FormLabel,
+    Input,
+    Textarea,
+    Button,
+    useToast,
+} from '@chakra-ui/react'
+import { Form } from 'react-router-dom';
 
 function AddSong() {
+    const toast = useToast();
     const [formData, setFormData] = useState({
         title: '',
         artist: '',
@@ -20,73 +33,93 @@ function AddSong() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.get.post('http://localhost:5000/api/songs', formData);
-            setStatus({ type: 'success', message: 'Song added successfully!'});
-            setFormData({
-                title: '',
-                artist: '',
-                lyrics: '',
-                audioUrl: '',
-                duration: 0
-            });
-        } catch (error) {
-            setStatus({ type: 'error', message: 'Failed to add song. Please try again.' });
-        }
-    };
+            e.preventDefault();
+            try {
+                await axios.post('http://localhost:5000/api/songs', formData);
+                toast({ 
+                        title: 'Success', 
+                        description: 'Song added successfully!',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                    });
+                setFormData({
+                    title: '',
+                    artist: '',
+                    lyrics: '',
+                    audioUrl: '',
+                    duration: 0
+                });
+            } catch (error) {
+                toast({ 
+                    title: 'Error',
+                    description: 'Failed to add song. Please try again.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            }
+        };
 
-    return (
-        <div className="add-song-form">
-            <h2>Add New Song</h2>
-            {status.message && (
-                <div className={'status-message ${status.type}'}>
-                    {status.message}
-                </div>
-            )}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Title:</label>
-                    <input 
-                        type='text'
-                        name='title'
-                        value={formData.title}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Lyrics:</label>
-                    <textarea 
-                        name="lyrics"
-                        value={formData.lyrics}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Audio:</label>
-                    <textarea
-                        type='url'
-                        name="audioUrl"
-                        value={formData.audioUrl}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Duration (seconds):</label>
-                    <textarea 
-                        type='number'
-                        name="duration"
-                        value={formData.duration}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <button type='submit'>Add Song</button>
+        return (
+            <Box maxW='container.md' mx='auto'>
+                <Heading mb={6}>Add New Song</Heading>
+                <form onSubmit={handleSubmit}>
+                    <VStack spacing={4}>
+                        <FormControl isRequired>
+                            <FormLabel>Title:</FormLabel>
+                            <input 
+                                name='title'
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
+                        </FormControl>
+                    
+                        <FormControl isRequired>
+                            <FormLabel>Artist:</FormLabel>
+                            <input 
+                                name='artist'
+                                value={formData.artist}
+                                onChange={handleChange}
+                            />
+                        </FormControl>
+
+                        <FormControl isRequired>
+                            <FormLabel>Lyrics</FormLabel>
+                            <Textarea 
+                                name='lyrics'
+                                value={formData.lyrics}
+                                onChange={handleChange}
+                                rows={6}
+                            />
+                        </FormControl>
+                    
+                        <FormControl isRequired>
+                            <FormLabel>Audio URL</FormLabel>
+                            <input 
+                                name='audioUrl'
+                                value={formData.audioUrl}
+                                onChange={handleChange}
+                                type='url'
+                            />
+                        </FormControl>
+
+                        <FormControl isRequired>
+                            <FormLabel>Duration (seconds)</FormLabel>
+                            <input 
+                                name='duration'
+                                value={formData.duration}
+                                onChange={handleChange}
+                                type='number'
+                            />
+                        </FormControl>
+
+                    <Button type='submit' colorScheme='blue' size='1g' w='full'>
+                        Add Song
+                    </Button>
+                </VStack>
             </form>
-        </div>
+        </Box>
     );
 }
 

@@ -1,18 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Box, Container } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import SongList from './components/SongList';
-// import KaraokePlayer from './components/KaraokePlayer';
+import AddSong from './components/AddSong';
+import KaraokePlayer from './components/KaraokePlayer';
+import { Switch } from '@chakra-ui/react';
 
 function App() {
   return (
     <Router>
-      <div className='App'>
+      <Box minH='100vh'>
         <Navbar />
-        <Routes>
-          <Route path='/' element={<SongList />}></Route>
-        </Routes>
-      </div>
+        <Container maxW='container.xl' py={8}>
+        <Switch>
+          <Routes>
+            <Route path="/" element={<SongList />} />
+            <Route path="/add" element={<AddSong />} />
+            <Route path="/play/:id" element={<KaraokePlayer />} />
+          </Routes>
+        </Switch>
+        </Container>
+      </Box>
     </Router>
   );
 }
